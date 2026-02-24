@@ -105,7 +105,7 @@
   <div style="display: flex; align-items: center; gap: 10px;">
     <button type="submit">批量导入</button>
     <div>
-      预计添加: {getExpectedCount()} 个 | 现有: {data.stores.length} 个
+      预计添加: {getExpectedCount()} 个 | 现有: {data.totalCount} 个
     </div>
   </div>
 </form>
