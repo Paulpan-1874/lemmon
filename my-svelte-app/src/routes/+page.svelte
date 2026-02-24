@@ -61,7 +61,7 @@
         navigator.clipboard.writeText(currentPhone)
           .then(() => {
             // 更新按钮文本
-            copyButtonText = '已完成'
+            copyButtonText = 'ok'
             // 2秒后恢复原始文本
             setTimeout(() => {
               copyButtonText = '复制电话'
@@ -96,7 +96,7 @@
       const successful = document.execCommand('copy')
       if (successful) {
         // 更新按钮文本
-        copyButtonText = '已完成'
+        copyButtonText = 'ok'
         // 2秒后恢复原始文本
         setTimeout(() => {
           copyButtonText = '复制电话'
@@ -128,7 +128,7 @@
         })
         if (res.ok) {
           // 更新按钮文本
-          addedButtonText = '已完成'
+          addedButtonText = 'ok'
           // 2秒后恢复原始文本
           setTimeout(() => {
             addedButtonText = '已添加'
@@ -158,7 +158,7 @@
         })
         if (res.ok) {
           // 更新按钮文本
-          invalidButtonText = '已完成'
+          invalidButtonText = 'ok'
           // 2秒后恢复原始文本
           setTimeout(() => {
             invalidButtonText = '号码无效'
@@ -260,7 +260,7 @@
               <div>
                 <strong>{data.users.find(u => u.id === record.userId)?.username}</strong>
                 <span style="margin-left: 15px;">{record.isAdded ? '已添加' : '未添加'}</span>
-                <span style="margin-left: 15px;">{record.isValid ? '有效' : '无效'}</span>
+                <span style="margin-left: 15px;">{record.isValid ? '号码有效' : '号码无效'}</span>
               </div>
               <div style="font-size: 12px; color: #666;">
                 {new Date(record.createdAt).toLocaleString()}
