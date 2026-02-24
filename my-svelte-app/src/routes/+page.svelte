@@ -33,20 +33,18 @@
   // 随机获取一个电话号码
   async function getRandomStore() {
     try {
-      const res = await fetch('/api/stores')
+      const res = await fetch('/api/stores?action=random')  // 添加 ?action=random 参数
       if (res.ok) {
-        const stores = await res.json()
-        if (stores.length > 0) {
-          // 获取所有唯一的电话号码
-          const uniquePhones = [...new Set(stores.map(store => store.phone))]
-          // 随机选择一个电话号码
-          const randomPhone = uniquePhones[Math.floor(Math.random() * uniquePhones.length)]
-          currentPhone = randomPhone
-          // 获取该电话号码对应的所有店铺
-          currentStores = stores.filter(store => store.phone === randomPhone)
-          // 获取该电话号码的追踪记录
-          await getTrackingRecords(randomPhone)
-        }
+        const { phone } = await res.json()  // 获取随机电话号码
+        currentPhone = phone
+        
+        // 获取该电话号码对应的所有店铺
+        const storesRes = await fetch('/api/stores')
+        const allStores = await storesRes.json()
+        currentStores = allStores.filter(store => store.phone === phone)
+        
+        // 获取该电话号码的追踪记录
+        await getTrackingRecords(phone)
       }
     } catch (error) {
       console.error('获取店铺失败:', error)

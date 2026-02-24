@@ -35,12 +35,29 @@ export async function POST({ request }) {
   }
 }
 
-export async function GET() {
+export async function GET({ url }) {
   try {
-    // 查询最新的100个店铺（按创建时间倒序）
+    // 获取查询参数
+    const action = url.searchParams.get('action')
+    
+    if (action === 'random') {
+      // 随机选择一个店铺
+      const stores = await prisma.store.findMany({
+        select: { phone: true }  // 只需要电话号码
+      })
+      
+      if (stores.length > 0) {
+        const randomStore = stores[Math.floor(Math.random() * stores.length)]
+        return json(randomStore)
+      }
+      
+      return json({ error: '暂无店铺' }, { status: 404 })
+    }
+    
+    // 默认查询最新的100个店铺（按创建时间倒序）
     const stores = await prisma.store.findMany({
-      orderBy: { createdAt: 'desc' },  // 按创建时间倒序
-      take: 100  // 只取前100个
+      orderBy: { createdAt: 'desc' },
+      take: 100
     })
 
     // 返回结果
