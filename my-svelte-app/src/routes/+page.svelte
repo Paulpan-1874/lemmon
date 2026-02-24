@@ -35,16 +35,18 @@
     try {
       const res = await fetch('/api/stores?action=random')  // 添加 ?action=random 参数
       if (res.ok) {
-        const { phone } = await res.json()  // 获取随机电话号码
-        currentPhone = phone
+        // API 返回完整的店铺对象
+        const randomStore = await res.json()
         
-        // 获取该电话号码对应的所有店铺
-        const storesRes = await fetch('/api/stores')
-        const allStores = await storesRes.json()
-        currentStores = allStores.filter(store => store.phone === phone)
-        
-        // 获取该电话号码的追踪记录
-        await getTrackingRecords(phone)
+        if (randomStore) {
+          currentPhone = randomStore.phone
+          
+          // 直接使用返回的店铺作为当前店铺
+          currentStores = [randomStore]
+          
+          // 获取该电话号码的追踪记录
+          await getTrackingRecords(randomStore.phone)
+        }
       }
     } catch (error) {
       console.error('获取店铺失败:', error)
@@ -163,6 +165,7 @@
           }, 2000)
           // 重新获取追踪记录
           await getTrackingRecords(currentPhone)
+          // 移除自动切换到下一个店铺的代码
         }
       } catch (error) {
         console.error('标记失败:', error)
@@ -258,7 +261,7 @@
               <div>
                 <strong>{data.users.find(u => u.id === record.userId)?.username}</strong>
                 <span style="margin-left: 15px;">{record.isAdded ? '已添加' : '未添加'}</span>
-                <span style="margin-left: 15px;">{record.isValid ? '号码有效' : '号码无效'}</span>
+                <span style="margin-left: 15px;">{record.isValid ? '有效' : '无效'}</span>
               </div>
               <div style="font-size: 12px; color: #666;">
                 {new Date(record.createdAt).toLocaleString()}
