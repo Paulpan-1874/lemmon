@@ -41,14 +41,15 @@ export async function GET({ url }) {
     const action = url.searchParams.get('action')
     
     if (action === 'random') {
-      // 随机选择一个店铺
-      const stores = await prisma.store.findMany({
-        select: { phone: true }  // 只需要电话号码
-      })
+      // 使用原生 SQL 随机选择一个店铺（最高效）
+      const randomStore = await prisma.$queryRaw`
+        SELECT * FROM Store ORDER BY RANDOM() LIMIT 1
+      `
       
-      if (stores.length > 0) {
-        const randomStore = stores[Math.floor(Math.random() * stores.length)]
-        return json(randomStore)
+      console.log('随机选择的店铺:', randomStore)
+      
+      if (randomStore && randomStore.length > 0) {
+        return json(randomStore[0])
       }
       
       return json({ error: '暂无店铺' }, { status: 404 })
