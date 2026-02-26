@@ -290,11 +290,11 @@
 
 <!-- 随机50个店铺列表 -->
 {#if random50Stores.length > 0}
-  <div style="margin-top: 30px; border: 1px solid #ddd; border-radius: 8px; padding: 20px; max-width: 600px;">
+  <div style="margin-top: 30px; border: 3px solid #ddd; border-radius: 8px; padding: 20px; max-width: 600px;">
     <h3>随机50个店铺</h3>
     <div style="margin-bottom: 20px;">
       {#each random50Stores as store}
-        <div style="padding: 15px; border: 1px solid {trackingRecordsMap.get(store.phone)?.length > 0 ? '#eee' : '#4CAF50'}; border-radius: 4px; background-color: #f9f9f9; margin-bottom: 10px;">
+        <div style="padding: 15px; border: 2px solid {trackingRecordsMap.get(store.phone)?.length > 0 ? '#eee' : '#4CAF50'}; border-radius: 4px; background-color: #f9f9f9; margin-bottom: 10px;">
           <!-- 用户操作记录 -->
           {#if trackingRecordsMap.get(store.phone)?.length > 0 && trackingRecordsMap.get(store.phone)[0]}
             <div style="font-size: 14px; margin-bottom: 5px;">
